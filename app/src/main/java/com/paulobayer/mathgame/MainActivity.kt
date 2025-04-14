@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     // Elementos da interface
     private lateinit var mainLayout: ConstraintLayout
     private lateinit var questionNumberText: TextView
-    private lateinit var operatorTextView: TextView
     private lateinit var answerInput: EditText
     private lateinit var checkButton: Button
     private lateinit var nextButton: Button
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         questionNumberText = findViewById(R.id.questionNumberText)
         num1TextView = findViewById(R.id.num1)
         num2TextView = findViewById(R.id.num2)
-        operatorTextView = findViewById(R.id.operator)
+        opTextView = findViewById(R.id.operator)
         answerInput = findViewById(R.id.answerInput)
         checkButton = findViewById(R.id.checkButton)
         nextButton = findViewById(R.id.nextButton)
