@@ -11,12 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.random.Random
 
-/**
- * Activity principal do jogo de matemática
- * Apresenta expressões matemáticas para crianças responderem
- */
 class MainActivity : AppCompatActivity() {
-    // Elementos da interface
     private lateinit var mainLayout: ConstraintLayout
     private lateinit var questionNumberText: TextView
     private lateinit var answerInput: EditText
@@ -25,13 +20,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resultText: TextView
     private lateinit var correctAnswerText: TextView
 
-    // Variáveis do jogo
     private var currentQuestionNumber = 1
     private var score = 0
-    private var currentAnswer = 0
+    private var currentAnswer: Int? = null
     private var totalQuestions = 5
 
-    // Cores para feedback visual
     private val correctColor = Color.parseColor("#BBFFBB")
     private val wrongColor = Color.parseColor("#FFBBBB")
     private val normalColor = Color.parseColor("#E6F4FF")
@@ -44,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicializa as views
         mainLayout = findViewById(R.id.main)
         questionNumberText = findViewById(R.id.questionNumberText)
         num1TextView = findViewById(R.id.num1)
@@ -56,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         resultText = findViewById(R.id.resultText)
         correctAnswerText = findViewById(R.id.correctAnswerText)
 
-        // Configura os botões
         checkButton.setOnClickListener {
             checkAnswer()
         }
@@ -65,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             moveToNextQuestion()
         }
 
-        // Inicia o jogo
         updateRandomValues()
     }
 
@@ -74,21 +64,18 @@ class MainActivity : AppCompatActivity() {
         val isCorrect = userAnswer == currentAnswer
         
         if (isCorrect) {
-            // Resposta correta
             score += 20
             mainLayout.setBackgroundColor(correctColor)
             resultText.text = getString(R.string.correct_answer)
             resultText.visibility = View.VISIBLE
         } else {
-            // Resposta incorreta
             mainLayout.setBackgroundColor(wrongColor)
             resultText.text = getString(R.string.wrong_answer)
             resultText.visibility = View.VISIBLE
             correctAnswerText.text = currentAnswer.toString()
             correctAnswerText.visibility = View.VISIBLE
         }
-        
-        // Desabilita entrada e mostra botão de próxima
+
         answerInput.isEnabled = false
         checkButton.isEnabled = false
         
@@ -103,11 +90,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun moveToNextQuestion() {
         if (currentQuestionNumber < totalQuestions) {
-            // Próxima questão
             currentQuestionNumber++
             updateRandomValues()
         } else {
-            // Finaliza e mostra resultados
             val intent = Intent(this, ResultActivity::class.java)
             intent.putExtra("SCORE", score)
             startActivity(intent)
@@ -128,10 +113,17 @@ class MainActivity : AppCompatActivity() {
         var operators = listOf("+", "-")
         var op = operators[Random.nextInt(operators.size)]
         opTextView.text = op
+        var num2 = 0
 
         do {
-            var num2 = Random.nextInt(100) + 1
+            num2 = Random.nextInt(100) + 1
             num2TextView.text = num2.toString()
         } while (op == "-" && num2 > num1)
+
+        if (op == "-") {
+            currentAnswer = num1 - num2
+        } else {
+            currentAnswer = num1 + num2
+        }
     }
 }
