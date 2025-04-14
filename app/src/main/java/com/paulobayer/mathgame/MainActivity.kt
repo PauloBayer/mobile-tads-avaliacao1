@@ -11,10 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.random.Random
 
-/**
- * Activity principal do jogo de matemática
- * Apresenta expressões matemáticas para crianças responderem
- */
+
 class MainActivity : AppCompatActivity() {
     // Elementos da interface
     private lateinit var mainLayout: ConstraintLayout
@@ -65,8 +62,25 @@ class MainActivity : AppCompatActivity() {
             moveToNextQuestion()
         }
 
+        // Inicializa interface
+        resetUI()
+        
         // Inicia o jogo
         updateRandomValues()
+    }
+    
+    // Reseta a interface para estado inicial
+    private fun resetUI() {
+        mainLayout.setBackgroundColor(normalColor)
+        answerInput.setText("")
+        answerInput.isEnabled = true
+        checkButton.isEnabled = true
+        nextButton.visibility = View.INVISIBLE
+        resultText.visibility = View.INVISIBLE
+        correctAnswerText.visibility = View.INVISIBLE
+        
+        // Atualiza o número da questão
+        questionNumberText.text = getString(R.string.question_format, currentQuestionNumber)
     }
 
     private fun checkAnswer() {
@@ -92,11 +106,7 @@ class MainActivity : AppCompatActivity() {
         answerInput.isEnabled = false
         checkButton.isEnabled = false
 
-        if (currentQuestionNumber == totalQuestions) {
-            nextButton.text = getString(R.string.finish_button)
-        } else {
-            nextButton.text = getString(R.string.next_button)
-        }
+        nextButton.text = getString(R.string.next_button)
 
         nextButton.visibility = View.VISIBLE
     }
@@ -105,6 +115,11 @@ class MainActivity : AppCompatActivity() {
         if (currentQuestionNumber < totalQuestions) {
             // Próxima questão
             currentQuestionNumber++
+            
+            // Reseta a interface
+            resetUI()
+            
+            // Gera nova expressão
             updateRandomValues()
         } else {
             // Finaliza e mostra resultados
@@ -113,25 +128,27 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        num1TextView = findViewById(R.id.num1)
-        opTextView = findViewById(R.id.operator)
-        num2TextView = findViewById(R.id.num2)
-
-        updateRandomValues()
     }
 
+    // Função para gerar valores aleatórios e atualizar expressão
     fun updateRandomValues() {
+        // Gera primeiro número
         val num1 = Random.nextInt(100) + 1
         num1TextView.text = num1.toString()
 
+        // Escolhe operador
         var operators = listOf("+", "-")
         var op = operators[Random.nextInt(operators.size)]
         opTextView.text = op
 
+        // Gera segundo número (para subtração, evita números negativos)
+        var num2: Int
         do {
-            var num2 = Random.nextInt(100) + 1
+            num2 = Random.nextInt(100) + 1
             num2TextView.text = num2.toString()
         } while (op == "-" && num2 > num1)
+        
+        // Calcula resposta correta
+        currentAnswer = if (op == "+") num1 + num2 else num1 - num2
     }
 }
