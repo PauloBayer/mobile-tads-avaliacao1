@@ -56,13 +56,26 @@ class MainActivity : AppCompatActivity() {
             moveToNextQuestion()
         }
 
+        resetUI()
         updateRandomValues()
+    }
+
+    private fun resetUI() {
+        mainLayout.setBackgroundColor(normalColor)
+        answerInput.setText("")
+        answerInput.isEnabled = true
+        checkButton.isEnabled = true
+        nextButton.visibility = View.INVISIBLE
+        resultText.visibility = View.INVISIBLE
+        correctAnswerText.visibility = View.INVISIBLE
+
+        questionNumberText.text = getString(R.string.question_format, currentQuestionNumber)
     }
 
     private fun checkAnswer() {
         val userAnswer = answerInput.text.toString().toIntOrNull() ?: 0
         val isCorrect = userAnswer == currentAnswer
-        
+
         if (isCorrect) {
             score += 20
             mainLayout.setBackgroundColor(correctColor)
@@ -78,19 +91,16 @@ class MainActivity : AppCompatActivity() {
 
         answerInput.isEnabled = false
         checkButton.isEnabled = false
-        
-        if (currentQuestionNumber == totalQuestions) {
-            nextButton.text = getString(R.string.finish_button)
-        } else {
-            nextButton.text = getString(R.string.next_button)
-        }
-        
+        nextButton.text = getString(R.string.next_button)
+
         nextButton.visibility = View.VISIBLE
     }
 
     private fun moveToNextQuestion() {
         if (currentQuestionNumber < totalQuestions) {
             currentQuestionNumber++
+
+            resetUI()
             updateRandomValues()
         } else {
             val intent = Intent(this, ResultActivity::class.java)
@@ -98,12 +108,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        num1TextView = findViewById(R.id.num1)
-        opTextView = findViewById(R.id.operator)
-        num2TextView = findViewById(R.id.num2)
-
-        updateRandomValues()
     }
 
     fun updateRandomValues() {
@@ -113,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         var operators = listOf("+", "-")
         var op = operators[Random.nextInt(operators.size)]
         opTextView.text = op
-        var num2 = 0
+        var num2: Int
 
         do {
             num2 = Random.nextInt(100) + 1

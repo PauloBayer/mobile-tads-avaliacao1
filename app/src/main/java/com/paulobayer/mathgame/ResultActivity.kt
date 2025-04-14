@@ -6,10 +6,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-/**
- * Activity que mostra o resultado final do jogo
- * Exibe a pontuação e permite reiniciar o jogo
- */
 class ResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
