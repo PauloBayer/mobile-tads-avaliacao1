@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">MathGame</string>
+    <string name="app_name">Jogo da Matemática</string>
+    <string name="game_title">Jogo da Matemática</string>
+    <string name="instruction_text">Responda corretamente a equação abaixo:</string>
+    <string name="question_format">Questão %1$d de 5</string>
+    <string name="answer_label">Digite sua resposta:</string>
+    <string name="check_button">Verificar</string>
+    <string name="next_button">Próxima Questão</string>
+    <string name="finish_button">Finalizar Jogo</string>
+    <string name="correct_answer">Resposta Correta!</string>
+    <string name="wrong_answer">Resposta Incorreta!</string>
+    <string name="correct_answer_was">A resposta correta é: %1$d</string>
+    <string name="play_again">Jogar Novamente</string>
+    <string name="final_score">Sua nota: %1$d de 100 pontos</string>
+    <string name="game_finished">Jogo Finalizado!</string>
 </resources>
