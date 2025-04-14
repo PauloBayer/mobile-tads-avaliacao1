@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkAnswer() {
         val userAnswer = answerInput.text.toString().toIntOrNull() ?: 0
         val isCorrect = userAnswer == currentAnswer
-        
+
         if (isCorrect) {
             // Resposta correta
             score += 20
@@ -88,17 +88,17 @@ class MainActivity : AppCompatActivity() {
             correctAnswerText.text = currentAnswer.toString()
             correctAnswerText.visibility = View.VISIBLE
         }
-        
+
         // Desabilita entrada e mostra botão de próxima
         answerInput.isEnabled = false
         checkButton.isEnabled = false
-        
+
         if (currentQuestionNumber == totalQuestions) {
             nextButton.text = getString(R.string.finish_button)
         } else {
             nextButton.text = getString(R.string.next_button)
         }
-        
+
         nextButton.visibility = View.VISIBLE
     }
 
