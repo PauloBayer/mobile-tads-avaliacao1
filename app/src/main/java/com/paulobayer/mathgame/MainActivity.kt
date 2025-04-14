@@ -81,6 +81,9 @@ class MainActivity : AppCompatActivity() {
             mainLayout.setBackgroundColor(correctColor)
             resultText.text = getString(R.string.correct_answer)
             resultText.visibility = View.VISIBLE
+            // Agora quando acerta ele também exibe o correctAnswer
+            correctAnswerText.text = currentAnswer.toString()
+            correctAnswerText.visibility = View.VISIBLE
         } else {
             mainLayout.setBackgroundColor(wrongColor)
             resultText.text = getString(R.string.wrong_answer)
