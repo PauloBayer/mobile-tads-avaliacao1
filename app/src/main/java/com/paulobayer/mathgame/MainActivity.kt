@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
     // Elementos da interface
     private lateinit var mainLayout: ConstraintLayout
     private lateinit var questionNumberText: TextView
-    private lateinit var num1TextView: TextView
-    private lateinit var num2TextView: TextView
     private lateinit var operatorTextView: TextView
     private lateinit var answerInput: EditText
     private lateinit var checkButton: Button
@@ -38,6 +36,10 @@ class MainActivity : AppCompatActivity() {
     private val correctColor = Color.parseColor("#BBFFBB")
     private val wrongColor = Color.parseColor("#FFBBBB")
     private val normalColor = Color.parseColor("#E6F4FF")
+
+    private lateinit var num1TextView: TextView
+    private lateinit var opTextView: TextView
+    private lateinit var num2TextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,50 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Inicia o jogo
-        generateQuestion()
+        updateRandomValues()
     }
 
-    /**
-     * Gera uma nova expressão matemática aleatória
-     */
-    private fun generateQuestion() {
-        // Reseta a interface
-        mainLayout.setBackgroundColor(normalColor)
-        answerInput.setText("")
-        answerInput.isEnabled = true
-        checkButton.isEnabled = true
-        nextButton.visibility = View.INVISIBLE
-        resultText.visibility = View.INVISIBLE
-        correctAnswerText.visibility = View.INVISIBLE
-
-        // Atualiza número da questão
-        questionNumberText.text = getString(R.string.question_format, currentQuestionNumber)
-
-        // Escolhe operação aleatória
-        val isAddition = Random.nextBoolean()
-        operatorTextView.text = if (isAddition) "+" else "-"
-
-        if (isAddition) {
-            // Adição: números aleatórios de 0 a 99
-            val num1 = Random.nextInt(100)
-            val num2 = Random.nextInt(100)
-            num1TextView.text = num1.toString()
-            num2TextView.text = num2.toString()
-            currentAnswer = num1 + num2
-        } else {
-            // TODO: Implementar lógica para evitar resultados negativos na subtração
-            // Dica: Garanta que o primeiro número seja sempre maior que o segundo
-            val num1 = Random.nextInt(100)
-            val num2 = Random.nextInt(100)
-            num1TextView.text = num1.toString()
-            num2TextView.text = num2.toString()
-            currentAnswer = num1 - num2
-        }
-    }
-
-    /**
-     * Verifica a resposta fornecida pelo usuário
-     */
     private fun checkAnswer() {
         val userAnswer = answerInput.text.toString().toIntOrNull() ?: 0
         val isCorrect = userAnswer == currentAnswer
@@ -141,14 +102,11 @@ class MainActivity : AppCompatActivity() {
         nextButton.visibility = View.VISIBLE
     }
 
-    /**
-     * Avança para próxima questão ou finaliza o jogo
-     */
     private fun moveToNextQuestion() {
         if (currentQuestionNumber < totalQuestions) {
             // Próxima questão
             currentQuestionNumber++
-            generateQuestion()
+            updateRandomValues()
         } else {
             // Finaliza e mostra resultados
             val intent = Intent(this, ResultActivity::class.java)
@@ -156,5 +114,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        num1TextView = findViewById(R.id.num1)
+        opTextView = findViewById(R.id.operator)
+        num2TextView = findViewById(R.id.num2)
+
+        updateRandomValues()
+    }
+
+    fun updateRandomValues() {
+        val num1 = Random.nextInt(100) + 1
+        num1TextView.text = num1.toString()
+
+        var operators = listOf("+", "-")
+        var op = operators[Random.nextInt(operators.size)]
+        opTextView.text = op
+
+        do {
+            var num2 = Random.nextInt(100) + 1
+            num2TextView.text = num2.toString()
+        } while (op == "-" && num2 > num1)
     }
 }
