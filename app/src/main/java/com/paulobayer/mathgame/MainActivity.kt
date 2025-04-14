@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         correctAnswerText.visibility = View.INVISIBLE
 
         questionNumberText.text = getString(R.string.question_format, currentQuestionNumber)
+
     }
 
     private fun checkAnswer() {
@@ -91,7 +92,12 @@ class MainActivity : AppCompatActivity() {
 
         answerInput.isEnabled = false
         checkButton.isEnabled = false
-        nextButton.text = getString(R.string.next_button)
+
+        if (currentQuestionNumber < totalQuestions) {
+            nextButton.text = getString(R.string.next_button)
+        } else {
+            nextButton.text = "Finalizar jogo"
+        }
 
         nextButton.visibility = View.VISIBLE
     }
